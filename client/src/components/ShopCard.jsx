@@ -14,8 +14,8 @@ export default function ShopCard({ shop, rank, isTop = false }) {
   return (
     <Link
       to={`/shops/${shop._id}`}
-      className={`group relative flex min-h-[72px] items-center gap-3 rounded-card border bg-paper p-4 transition-all duration-150 hover:shadow-card active:scale-[0.99] ${
-        isTop ? 'border-highlight-border bg-highlight' : 'border-line'
+      className={`group relative flex min-h-[72px] items-center gap-3 rounded-card border bg-paper p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lift active:scale-[0.99] ${
+        isTop ? 'border-highlight-border bg-highlight' : 'border-line/80 hover:border-line-strong'
       } ${hasOffer ? '' : 'opacity-75'}`}
     >
       <span className="w-5 shrink-0 text-right text-sm font-semibold tabular-nums text-faint">

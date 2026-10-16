@@ -19,6 +19,7 @@ export default {
           600: '#16A34A',
           700: '#15803D',
           800: '#166534',
+          900: '#14532D',
         },
         // Soft warm highlight for "Best today"
         highlight: '#FBF6E9',
@@ -41,16 +42,22 @@ export default {
       },
       boxShadow: {
         card: '0 1px 2px rgba(23, 23, 23, 0.04), 0 4px 12px rgba(23, 23, 23, 0.05)',
-        lift: '0 2px 4px rgba(23, 23, 23, 0.06), 0 10px 24px rgba(23, 23, 23, 0.08)',
+        lift: '0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.06)',
+        glow: '0 0 24px rgba(22, 163, 74, 0.16)',
       },
       keyframes: {
         'fade-in': {
           '0%': { opacity: '0', transform: 'translateY(4px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        'slide-up': {
+          '0%': { opacity: '0', transform: 'translateY(8px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
       },
       animation: {
         'fade-in': 'fade-in 0.22s ease-out',
+        'slide-up': 'slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
       },
     },
   },

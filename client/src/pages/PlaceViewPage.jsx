@@ -4,6 +4,7 @@ import { ArrowLeft, Store } from 'lucide-react'
 import { usePlaces, usePlaceShops, usePlaceStats } from '../hooks/queries'
 import ShopCard from '../components/ShopCard'
 import FilterBar from '../components/FilterBar'
+import DealStats from '../components/DealStats'
 import EmptyState from '../components/EmptyState'
 import ErrorState from '../components/ErrorState'
 import { ShopListSkeleton } from '../components/Skeleton'
@@ -55,6 +56,12 @@ export default function PlaceViewPage() {
           {offerCount} {offerCount === 1 ? 'shop' : 'shops'} with offers today
         </p>
       </header>
+
+      <DealStats
+        offerCount={offerCount}
+        maxDiscount={statsQuery.data?.maxDiscount ?? 0}
+        categoryCount={categories.length}
+      />
 
       <FilterBar
         categories={categories}

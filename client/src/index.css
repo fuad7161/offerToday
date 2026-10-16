@@ -11,6 +11,9 @@
   body {
     @apply bg-canvas font-sans text-ink antialiased;
     font-feature-settings: 'cv11', 'ss01';
+    background-image: radial-gradient(rgba(23, 23, 23, 0.04) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-attachment: fixed;
   }
 
   /* Visible, accessible focus for keyboard users */
@@ -26,9 +29,9 @@
 }
 
 @layer components {
-  /* Shimmer skeleton — a soft gradient sweeping across a gray block */
+  /* Shimmer skeleton — a soft gradient sweeping across a gray block that blends with canvas */
   .shimmer {
-    @apply relative overflow-hidden bg-line;
+    @apply relative overflow-hidden bg-line/70;
   }
   .shimmer::after {
     content: '';
@@ -37,11 +40,11 @@
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(255, 255, 255, 0.7),
+      rgba(255, 255, 255, 0.45),
       transparent
     );
     transform: translateX(-100%);
-    animation: shimmer 1.4s infinite;
+    animation: shimmer 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
 
   /* Hide scrollbars on the horizontal filter chip row while keeping it scrollable */

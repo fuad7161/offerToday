@@ -4,6 +4,8 @@ import { useShop } from '../hooks/queries'
 import DiscountBadge from '../components/DiscountBadge'
 import OfferCard from '../components/OfferCard'
 import ProductRow from '../components/ProductRow'
+import SavingsCalculator from '../components/SavingsCalculator'
+import ShareButton from '../components/ShareButton'
 import EmptyState from '../components/EmptyState'
 import ErrorState from '../components/ErrorState'
 import { DetailSkeleton } from '../components/Skeleton'
@@ -73,25 +75,30 @@ export default function ShopDetailPage() {
         </div>
       </header>
 
-      {/* Trust + report placeholder (backend not implemented yet) */}
+      {/* Trust + share + report */}
       <div className="mb-6 flex items-center justify-between gap-3 rounded-card border border-line bg-paper p-3">
         <span className="flex items-center gap-2 text-sm text-muted">
           <ShieldCheck size={17} className="shrink-0 text-accent-700" aria-hidden="true" />
           Trust score <strong className="font-semibold text-ink">{shop.trustScore ?? 100}</strong>
         </span>
-        <button
-          type="button"
-          disabled
-          aria-disabled="true"
-          title="Coming soon"
-          className="inline-flex h-10 cursor-not-allowed items-center gap-1.5 rounded-full border border-line px-3.5 text-sm font-medium text-faint"
-        >
-          <Flag size={14} aria-hidden="true" />
-          Report offer
-          <span className="rounded-full bg-line px-1.5 py-0.5 text-[10px] font-semibold uppercase text-faint">
-            Soon
-          </span>
-        </button>
+        <div className="flex items-center gap-2">
+          {Number(shop.bestDiscountToday) > 0 && (
+            <ShareButton shopName={shop.name} discount={Math.round(Number(shop.bestDiscountToday))} />
+          )}
+          <button
+            type="button"
+            disabled
+            aria-disabled="true"
+            title="Coming soon"
+            className="inline-flex h-10 cursor-not-allowed items-center gap-1.5 rounded-full border border-line px-3.5 text-sm font-medium text-faint"
+          >
+            <Flag size={14} aria-hidden="true" />
+            Report offer
+            <span className="rounded-full bg-line px-1.5 py-0.5 text-[10px] font-semibold uppercase text-faint">
+              Soon
+            </span>
+          </button>
+        </div>
       </div>
 
       {/* Active offers */}
@@ -113,6 +120,9 @@ export default function ShopDetailPage() {
           />
         )}
       </section>
+
+      {/* Savings calculator */}
+      <SavingsCalculator products={products} />
 
       {/* Products */}
       <section aria-labelledby="products-heading">

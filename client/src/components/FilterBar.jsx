@@ -1,4 +1,44 @@
-import { SlidersHorizontal } from 'lucide-react'
+import {
+  Baby,
+  Cpu,
+  Dumbbell,
+  Footprints,
+  HeartPulse,
+  Package,
+  Shirt,
+  ShoppingBag,
+  SlidersHorizontal,
+  Sparkles,
+  Utensils,
+} from 'lucide-react'
+
+const CATEGORY_ICONS = {
+  all: Sparkles,
+  fashion: Shirt,
+  shoes: Footprints,
+  footwear: Footprints,
+  clothing: Shirt,
+  apparel: Shirt,
+  electronics: Cpu,
+  tech: Cpu,
+  sports: Dumbbell,
+  fitness: Dumbbell,
+  food: Utensils,
+  dining: Utensils,
+  restaurant: Utensils,
+  beauty: Sparkles,
+  health: HeartPulse,
+  kids: Baby,
+  grocery: ShoppingBag,
+  supermarket: ShoppingBag,
+  misc: Package,
+}
+
+function getCategoryIcon(cat) {
+  if (!cat) return CATEGORY_ICONS.all
+  const key = cat.toLowerCase().trim()
+  return CATEGORY_ICONS[key] || ShoppingBag
+}
 
 const MIN_OPTIONS = [
   { value: null, label: 'Any' },
@@ -7,19 +47,20 @@ const MIN_OPTIONS = [
   { value: 30, label: '30%+' },
 ]
 
-function Chip({ active, onClick, children }) {
+function Chip({ active, onClick, icon: Icon, children }) {
   return (
     <button
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`h-9 shrink-0 whitespace-nowrap rounded-full border px-3.5 text-sm font-medium transition ${
+      className={`inline-flex h-9 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 text-sm font-medium transition active:scale-95 ${
         active
-          ? 'border-accent-700 bg-accent-700 text-white'
-          : 'border-line bg-paper text-muted hover:border-line-strong'
+          ? 'border-accent-700 bg-accent-700 text-white shadow-xs'
+          : 'border-line/90 bg-paper text-muted hover:border-line-strong hover:text-ink'
       }`}
     >
-      {children}
+      {Icon && <Icon size={14} className={active ? 'text-white' : 'text-faint'} aria-hidden="true" />}
+      <span>{children}</span>
     </button>
   )
 }
@@ -43,11 +84,11 @@ export default function FilterBar({
         <span className="mr-0.5 hidden shrink-0 items-center gap-1 text-sm font-medium text-faint sm:inline-flex">
           <SlidersHorizontal size={15} aria-hidden="true" />
         </span>
-        <Chip active={activeCategory == null} onClick={() => onCategoryChange(null)}>
+        <Chip active={activeCategory == null} icon={getCategoryIcon('all')} onClick={() => onCategoryChange(null)}>
           All
         </Chip>
         {categories.map((c) => (
-          <Chip key={c} active={activeCategory === c} onClick={() => onCategoryChange(c)}>
+          <Chip key={c} active={activeCategory === c} icon={getCategoryIcon(c)} onClick={() => onCategoryChange(c)}>
             {c}
           </Chip>
         ))}

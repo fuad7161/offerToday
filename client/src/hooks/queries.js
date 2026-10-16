@@ -65,9 +65,46 @@ export function usePlaceStats(placeId) {
       const shops = (await api.get(`/places/${placeId}/shops`)).data
       const categories = [...new Set(shops.map((s) => s.category).filter(Boolean))]
       const offerCount = shops.filter((s) => Number(s.bestDiscountToday) > 0).length
-      return { categories, offerCount, shopCount: shops.length }
+      const maxDiscount = shops.reduce(
+        (max, s) => Math.max(max, Number(s.bestDiscountToday) || 0),
+        0,
+      )
+      return { categories, offerCount, shopCount: shops.length, maxDiscount }
     },
     enabled: !!placeId,
+    staleTime: 5 * 60 * 1000,
+  })
+}
+
+/**
+ * Best discount per place — fetches shops (active offers only) for each place
+ * in parallel and returns a map of { placeId: bestDiscount }.
+ * Powers the "Up to X% OFF" peek on the home page place cards.
+ */
+export function usePlaceBestDeals(places = []) {
+  const placeIds = places.map((p) => p._id)
+  return useQuery({
+    queryKey: ['places', 'bestDeals', placeIds],
+    queryFn: async () => {
+      const results = {}
+      await Promise.all(
+        placeIds.map(async (id) => {
+          try {
+            const shops = (
+              await api.get(`/places/${id}/shops`, { params: { activeOnly: 'true' } })
+            ).data
+            results[id] = shops.reduce(
+              (max, s) => Math.max(max, Number(s.bestDiscountToday) || 0),
+              0,
+            )
+          } catch {
+            results[id] = 0
+          }
+        }),
+      )
+      return results
+    },
+    enabled: placeIds.length > 0,
     staleTime: 5 * 60 * 1000,
   })
 }
